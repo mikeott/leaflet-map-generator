@@ -1,0 +1,125 @@
+/*
+    Move mixins here after completing initial site build
+*/
+
+// Breakpoints
+@mixin breakpoint($point) {
+    @if $point == xs {
+        @media (min-width: 420px) { @content; }
+    } @else if $point == sm {
+        @media (min-width: 640px) { @content; }
+    } @else if $point == md {
+        @media (min-width: 960px)  { @content; }
+    } @else if $point == lg {
+        @media (min-width: 1100px)  { @content; }
+    } @else if $point == xl {
+        @media (min-width: 1600px)  { @content; }
+    }
+}
+
+/*
+ * Clearfix: contain floats
+ *
+ * For modern browsers
+ * 1. The space content is one way to avoid an Opera bug when the
+ *    `contenteditable` attribute is included anywhere else in the document.
+ *    Otherwise it causes space to appear at the top and bottom of elements
+ *    that receive the `clearfix` class.
+ * 2. The use of `table` rather than `block` is only necessary if using
+ *    `:before` to contain the top-margins of child elements.
+ */
+@mixin clear {
+    &:before,
+    &:after {
+        content: " "; /* 1 */
+        display: table; /* 2 */
+    }
+    
+    &:after {
+        clear: both;
+    }
+}
+
+/*
+ * Hide only visually, but have it available for screen readers:
+ * https://snook.ca/archives/html_and_css/hiding-content-for-accessibility
+ *
+ * 1. For long content, line feeds are not interpreted as spaces and small width
+ *    causes content to wrap 1 word per line:
+ *    https://medium.com/@jessebeach/beware-smushed-off-screen-accessible-text-5952a4c2cbfe
+ */
+ @mixin visually-hidden {
+    border: 0;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+    white-space: nowrap; /* 1 */
+    /*
+     * Extends visually-hidden to allow the element
+     * to be focusable when navigated to via the keyboard:
+     * https://www.drupal.org/node/897638
+     */
+    &:focus,
+    &.focusable:active,
+    &.focusable:active {
+        clip: auto;
+        height: auto;
+        margin: 0;
+        overflow: visible;
+        position: static;
+        width: auto;
+        white-space: inherit;
+    }
+}
+
+/* 
+    Flex Mixins.
+    Apply these to the container element
+    Note: CSS columns have no effect on a flex container
+*/
+@mixin flex-wrap {
+    display: flex;          // enables a flex context for all its direct children
+    flex-flow: row wrap;    // flex items will wrap onto multiple lines, from top to bottom
+}
+
+@mixin flex-space-between {
+    display: flex;                  // enables a flex context for all its direct children
+    flex-flow: row nowrap;          // all flex items will be on one line, left to right (this is the default property) 
+    justify-content: space-between; //  items are evenly distributed in the line; first item is on the start line, last item on the end line
+}
+
+@mixin flex-center {
+    display: flex;              // enables a flex context for all its direct children
+    align-items: center;        // items are centered in the cross-axis
+    justify-content: center;    // items are centered along the line    
+}
+
+@mixin flex-col {
+    display: flex;              // enables a flex context for all its direct children
+    flex-flow: column nowrap;   // all flex items will be on one line, top to bottom     
+}
+
+@mixin flex-col-center {
+    display: flex;              // enables a flex context for all its direct children
+    flex-flow: column nowrap;   // all flex items will be on one line, top to bottom   
+    align-items: center;        // items are centered in the cross-axis
+}
+
+/* 
+    Vertical alignments
+*/
+@mixin vertical-align {         // Align an element vertically inside another
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+@mixin no-vertical-align {      // Cancel out aligning an element vertically inside another
+    position: relative;
+    top: auto;
+    transform: translateY(0);
+}

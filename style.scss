@@ -1,0 +1,241 @@
+@import 'reset';
+@import 'mixins';
+@import url('https://fonts.googleapis.com/css?family=Nunito:400,800&amp;subset=latin-ext');
+
+$shadow:                    0 0 50px 0 rgba(0,0,0,.3);
+$shadow-light:              0 0 10px 0 rgba(0,0,0,.1);
+$shadow-angle:              10px 10px 50px 0 rgba(0,0,0,.15);
+$trans:			            transform  0.3s ease;
+$nunito:                    'Nunito', sans-serif;
+
+$blue:                      #03a9f4;
+$pink:                      #bb68ca;
+
+@mixin vertical-align {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+body {
+    font-size:                  62.5%;  /* Make using em's on elements easier (Eg: 3.2em is the same as 32px) */
+    font-family:                $nunito;
+    font-weight:                normal;
+    line-height:                1.6;
+    color:                      #3f4c5d;
+    -webkit-font-smoothing:     antialiased;
+    text-size-adjust:           100%;
+    background: #f1f1f1;
+}
+html {
+    box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
+    box-sizing: inherit;
+}
+
+form {
+    background: #fff;
+    width: 700px;
+    @include vertical-align;
+    left: calc(50% - 350px);
+    box-shadow: $shadow-angle;
+    padding: 0 0 0 300px;
+    transition: $trans;
+
+    .theme-image {
+        display: block;
+        width: 300px;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        background-size: cover;
+        overflow: hidden;
+
+        img {
+            display: block;
+            @include vertical-align;
+            left: calc(50% - 320px);
+            height: auto;
+        }
+    }
+
+    h1 {
+        position: absolute;
+        top: 10px;
+        left: -60px;
+        padding: 15px 25px;
+        width: 200px;
+        font-size: 3em;
+        line-height: 1.2em;
+        color: #fff;
+        background: $blue;
+        z-index: 99;
+        box-shadow: $shadow-angle;
+    }
+
+    .form-content {
+        @include flex-wrap;
+    }
+
+    p {
+        padding: 25px;
+        width: 50%;
+        position: relative;
+        margin: 0;
+
+        &.full-width {
+            width: 100%;
+        }
+
+        &.hidden {
+            display: none;
+        }
+
+        &::before,
+        &::after {
+            content: '';
+            display: block;
+            background: #f1f1f1;
+            position: absolute;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        select {
+            border: none;
+            background: #f1f1f1;
+            padding: 5px;
+            font-size: 1.3em;
+            font-weight: bold;
+            width: 100%;
+            height: 27px;
+        }
+
+        &::after {
+            top: 0;
+            right: 0;
+            height: 100%;
+            width: 1px;
+        }
+
+        &::before {
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 1px;
+        }
+
+        label {
+            display: block;
+            font-size: 1em;
+            text-transform: uppercase;
+            //font-weight: bold;
+            color: #666;
+        }
+    }
+
+    .valign {
+        @include vertical-align;
+    }
+}
+
+.submit {
+    border: none;
+    text-transform: uppercase;
+    padding: 15px 15px 13px 15px;
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #fff;
+    background: $blue;
+    cursor: pointer;
+    position: absolute;
+    bottom: -60px;
+    right: 0;
+}
+
+#the_code {
+    padding: 25px;
+    background: #fff;
+    font-size: 1.3em;
+    line-height: 1.3em;
+    font-family: 'Courier New', Courier, monospace;
+    width: 50%;
+    height: 70%;
+    overflow-y: scroll;
+    display: block;
+    position: fixed;
+    top: 15%;
+    left: 25%;
+    z-index: 9999;
+    box-shadow: $shadow-angle;
+    white-space: pre-wrap;
+    text-decoration: none !important;
+}
+
+input[required] {
+    border-bottom: solid 1px #ff0000 !important;
+}
+
+.copy {
+    display: block;
+    width: 100px;
+    text-align: center;
+    text-transform: uppercase;
+    padding: 15px 15px 13px 15px;
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #fff;
+    background: $blue;
+    cursor: pointer;
+    position: fixed;
+    bottom: calc(15% - 60px);
+    left: calc(75% - 100px);
+    z-index: 10;
+
+    &.copied {
+        background: #8bc34a;
+    }
+}
+
+.mask {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(#fff, .8);
+    z-index: 9;
+}
+
+// Custom checkbox styles
+input[type="checkbox"] {
+    display:none;
+}
+input[type="checkbox"] + label {
+    &::before {
+        content: "";
+        display: inline-block;
+        width: 15px;
+        height: 15px;
+        margin: -2px 4px 0 0;
+        vertical-align: middle;
+        border: solid 2px $blue;
+        cursor: pointer;
+        //border-radius: 2px;
+        font-size: 1.5em;
+        line-height: .85em;
+    }
+}
+input[type="checkbox"]:checked + label {
+    &::before {
+        content: "\2713";
+        opacity: 1;
+        font-weight: bold;
+        color: $blue;
+    }
+}

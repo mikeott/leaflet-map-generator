@@ -150,7 +150,7 @@
 
 <?php echo htmlspecialchars('<script>'); ?>
 
-<?php echo htmlspecialchars('jQuery( document ).ready(function() {'); ?>
+<?php echo htmlspecialchars('window.onload = function() {'); ?>
 
     <?php echo htmlspecialchars("var map = new L.Map('leaflet', {
         center: [" . $lat . ", " . $lng . "],
@@ -189,13 +189,12 @@
 
     <?php echo htmlspecialchars($satellite_view); ?>
 
-    <?php echo htmlspecialchars('});'); ?>
-
     <?php if($satellite_view) {
-        echo htmlspecialchars("\r<!--/ Auto check first radio button /-->\rjQuery( document ).ready(function() { \r     jQuery('.leaflet-control-layers-base label:nth-child(1) .leaflet-control-layers-selector').prop('checked', true); \r});");
+        echo htmlspecialchars("\r// Auto check first radio button\rdocument.querySelector('.leaflet-control-layers-base label:first-child input').checked = true;");
     }
     ?>
-
+    <?php echo htmlspecialchars('}'); ?>
+    
     <?php echo htmlspecialchars('</script>'); ?>
 
 <?php echo htmlspecialchars('<!--/ End Leaflet Map /-->'); ?>
@@ -208,17 +207,16 @@
     <form action="" method="POST">
         <h1>
             Leaflet Map Generator
-            <span style="display:block; font-size:.4em;">jQuery Required</span>
         </h1>
 
         <div class="form-content">
             <p>
                 <label>Latitude</label>
-                <input type="text" name="latitude" value="-31.945864953664223" required />
+                <input type="text" name="latitude" value="-32.12482252456546" required />
             </p>
             <p>
                 <label>Longitude</label>
-                <input type="text" name="longitude" value="115.86781662580758" required />
+                <input type="text" name="longitude" value="115.91658963680956" required />
             </p>
             <p>
                 <label>Width</label>
@@ -248,13 +246,13 @@
             </p>
             <p>
                 <span class="valign">
-                    <input type="checkbox" name="full_screen" id="full_screen" />
+                    <input type="checkbox" name="full_screen" id="full_screen" checked />
                     <label for="full_screen">Full screen control</label>
                 </span>
             </p>
             <p>
                 <span class="valign">
-                    <input type="checkbox" name="satellite_view" id="satellite_view" />
+                    <input type="checkbox" name="satellite_view" id="satellite_view" checked />
                     <label for="satellite_view">Satellite view control</label>
                 </span>
             </p>

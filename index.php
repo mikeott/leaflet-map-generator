@@ -2,10 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Leaflet Map Generator</title>
-    <link rel="stylesheet" href="style.css?v=1.1" type="text/css" media="all" />
+    <title>Leaflet Map Generator / by mikeott</title>
+    <link rel="stylesheet" href="css/style.css?v=1.0" type="text/css" media="all" />
 </head>
 <body>
 
@@ -26,13 +24,13 @@
     );
 
     $attribution = array(
-        'google'                => 'Map data &copy;2018 Google &nbsp;&nbsp; <a href="https://www.google.com/intl/en-GB_US/help/terms_maps.html" target="_blank" rel="noopener">Terms of use</a>',
+        'google'                => 'Map data &copy; ' . date('Y') . '&nbsp; Google &nbsp; <a href="https://www.google.com/intl/en-GB_US/help/terms_maps.html" target="_blank" rel="noopener">Terms of use</a>',
         'openstreetmap'         => '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
         'openstreetmap_bw'      => '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
         'opentopmap'            => 'Map data: &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>',
         'hydda_base'            => 'Tiles courtesy of <a href="http://openstreetmap.se/" target="_blank">OpenStreetMap Sweden</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
         'watercolor'            => 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-        'esri'                  => 'Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012',
+        'esri'                  => 'Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, ' . date('Y'),
         'positron'              => '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
         'voyager'               => '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
         'voyager_no_labels'     => '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
@@ -48,7 +46,7 @@
         $attribution = $attribution[$_POST['theme']];
     } else {
         $theme = 'https://mt0.google.com/vt/lyrs=m&x={x}&y={y}&z={z}';
-        $attribution = 'Map data &copy;2018 Google &nbsp;&nbsp; <a href="https://www.google.com/intl/en-GB_US/help/terms_maps.html" target="_blank" rel="noopener">Terms of use</a>';
+        $attribution = 'Map data &copy; ' .  date('Y') . '&nbsp; Google &nbsp; <a href="https://www.google.com/intl/en-GB_US/help/terms_maps.html" target="_blank" rel="noopener">Terms of use</a>';
     }
 
     $lat = $_POST['latitude'];
@@ -58,18 +56,18 @@
     if($zoom_level) {
         $zoom_level = $_POST['zoom_level'];
     } else {
-        $zoom_level = 9;
+        $zoom_level = 14;
     }
 
     $full_screen = isset($_POST['full_screen']);
     if($full_screen) {
-        $full_screen_css = "<style>.leaflet-control-zoom-fullscreen { background-image: url('https://raw.githubusercontent.com/brunob/leaflet.fullscreen/master/icon-fullscreen.png');}</style>";
-        $full_screen_js = '<script src="https://unpkg.com/leaflet.fullscreen@1.4.5/Control.FullScreen.js"></script>';
+        $full_screen_css = "\r<!--/ Start Fullscreen Addon: https://github.com/brunob/leaflet.fullscreen /-->\r<style>.leaflet-control-fullscreen-button { background: #fff url('https://leaflet.github.io/Leaflet.fullscreen/dist/fullscreen.png'); background-position: 50% 2px !important; } .leaflet-fullscreen-on .leaflet-control-fullscreen-button { background-position: 50% -24px !important; }</style>";
+        $full_screen_js = '<script src="https://leaflet.github.io/Leaflet.fullscreen/dist/Leaflet.fullscreen.min.js"></script>';
         $full_screen_init = "/* Full Screen: https://github.com/brunob/leaflet.fullscreen */\r";
-        $full_screen_init .= "        fullscreenControl: true,\r";
-        $full_screen_init .= "        fullscreenControlOptions: {\r";
-        $full_screen_init .= "            position: 'bottomright'\r";
-        $full_screen_init .= "        },";
+        $full_screen_init .= "  fullscreenControl: true,\r";
+        $full_screen_init .= "  fullscreenControlOptions: {\r";
+        $full_screen_init .= "  position: 'bottomright'\r";
+        $full_screen_init .= "},";
     } else {
         $full_screen_css = '';
         $full_screen_js = '';
@@ -81,6 +79,21 @@
         $scrollwheel = 'true';
     } else {
         $scrollwheel = 'false';
+    }
+
+    $satellite_view = isset($_POST['satellite_view']);	
+    if($satellite_view) {
+        $satellite_view = "\r\r/* Satellite view */\r";
+        $satellite_view .= "var default_view = L.tileLayer('" . $theme . "')\r";
+        $satellite_view .= "satellite_view = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}')\r";
+
+        $satellite_view .= "var baseMaps = {\r";
+        $satellite_view .= "    'Default': default_view,\r";
+        $satellite_view .= "    'Satellite': satellite_view\r";
+        $satellite_view .= "};\r";
+        $satellite_view .= "var overlays =  {\r";
+        $satellite_view .= "};\r";
+        $satellite_view .= "L.control.layers(baseMaps,overlays, {position: 'bottomleft'}).addTo(map);\r";
     }
 
     $popup = isset($_POST['popup']);	
@@ -113,7 +126,6 @@
         $marker_image .= "var orangeIcon = new mapIcon({iconUrl: '" . $marker_image_url . "'});\r";
         $marker_image .= "L.marker([" . $lat . ", " . $lng . "], {icon: orangeIcon}).addTo(map);\r";
         $marker_default = "/* Remove default marker */\r";
-        $marker_default .= "    map.removeLayer(marker);";
     } else {
         $marker_image = '';
         $marker_default = '';
@@ -126,15 +138,19 @@
 
 <?php echo htmlspecialchars('<link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.4/dist/leaflet.css" />'); ?>
     
-<?php echo htmlspecialchars('<script src="https://unpkg.com/leaflet@1.3.4/dist/leaflet.js"></script>');  ?>
+<?php echo htmlspecialchars('<script src="https://unpkg.com/leaflet@1.3.4/dist/leaflet.js"></script>'); ?>
 
-<?php echo htmlspecialchars($full_screen_css);  ?>
+<?php if($marker) {
+    echo '<style>.leaflet-shadow-pane img { display: none !important; } .leaflet-marker-pane img:first-child { display: none !important; } </style>';
+} ?>
 
-<?php echo htmlspecialchars($full_screen_js);  ?>
+<?php echo htmlspecialchars($full_screen_css); ?>
 
-<?php echo htmlspecialchars('<script>');  ?>
+<?php echo htmlspecialchars($full_screen_js); ?>
 
-<?php echo htmlspecialchars('$( document ).ready(function() {');  ?>
+<?php echo htmlspecialchars('<script>'); ?>
+
+<?php echo htmlspecialchars('jQuery( document ).ready(function() {'); ?>
 
     <?php echo htmlspecialchars("var map = new L.Map('leaflet', {
         center: [" . $lat . ", " . $lng . "],
@@ -142,6 +158,10 @@
         scrollWheelZoom: " . $scrollwheel . ",
         zoomControl: false,
         keyboard: true,
+        dragging: true,
+        zoomControl: false,
+        tap: false,
+        touchZoom: true,
         " . $full_screen_init . "
         layers: [
             new L.TileLayer('" . $theme . "', {
@@ -163,13 +183,20 @@
         position:'bottomright'
     }).addTo(map);"); ?>
 
-    <?php echo htmlspecialchars($popup);  ?>
+    <?php echo htmlspecialchars($popup); ?>
 
-    <?php echo htmlspecialchars($marker_image);  ?>
+    <?php echo htmlspecialchars($marker_image); ?>
 
-<?php echo htmlspecialchars('});');  ?>
+    <?php echo htmlspecialchars($satellite_view); ?>
 
-<?php echo htmlspecialchars('</script>');  ?>
+    <?php echo htmlspecialchars('});'); ?>
+
+    <?php if($satellite_view) {
+        echo htmlspecialchars("\r<!--/ Auto check first radio button /-->\rjQuery( document ).ready(function() { \r     jQuery('.leaflet-control-layers-base label:nth-child(1) .leaflet-control-layers-selector').prop('checked', true); \r});");
+    }
+    ?>
+
+    <?php echo htmlspecialchars('</script>'); ?>
 
 <?php echo htmlspecialchars('<!--/ End Leaflet Map /-->'); ?>
 </textarea>
@@ -179,16 +206,19 @@
 
     
     <form action="" method="POST">
-        <h1>Leaflet Map Generator</h1>
+        <h1>
+            Leaflet Map Generator
+            <span style="display:block; font-size:.4em;">jQuery Required</span>
+        </h1>
 
         <div class="form-content">
             <p>
                 <label>Latitude</label>
-                <input type="text" name="latitude" value="0-31.945816" required />
+                <input type="text" name="latitude" value="-31.945864953664223" required />
             </p>
             <p>
                 <label>Longitude</label>
-                <input type="text" name="longitude" value="115.867818" required />
+                <input type="text" name="longitude" value="115.86781662580758" required />
             </p>
             <p>
                 <label>Width</label>
@@ -200,7 +230,7 @@
             </p>
             <p>
                 <label>Zoom level</label>
-                <input type="number" name="zoom_level" min="1" max="18" step="1" value="9" />
+                <input type="number" name="zoom_level" min="1" max="18" step="1" value="14" />
             </p>
             <p>
                 <label>Theme</label>
@@ -224,36 +254,42 @@
             </p>
             <p>
                 <span class="valign">
+                    <input type="checkbox" name="satellite_view" id="satellite_view" />
+                    <label for="satellite_view">Satellite view control</label>
+                </span>
+            </p>
+            <p>
+                <span class="valign">
                     <input type="checkbox" name="scrollwheel" id="scrollwheel" />
-                    <label for="scrollwheel">Scrollwheel</label>
+                    <label for="scrollwheel">Enable scrollwheel</label>
                 </span>
             </p>
             <p>
                 <span class="valign">
                     <input type="checkbox" name="popup" id="popup" />
-                    <label for="popup">Popup</label>
+                    <label for="popup">Include marker popup</label>
                 </span>
             </p>
             <p>
                 <span class="valign">
                     <input type="checkbox" name="marker" id="marker" />
-                    <label for="marker">Custom marker</label>
+                    <label for="marker">Custom marker image</label>
                 </span>
             </p>
             <p class="full-width hidden image-path">
-                <label>Custom marker image path</label>
+                <label>Custom marker image path (absolute or relative)</label>
                 <input type="text" name="marker_image" id="marker_image" />
             </p>
             <p class="full-width hidden popup-text">
-                <label>Popup text</label>
-                <input type="text" name="popup_text" id="popup_text" />
+                <label>Popup text (HTML allowed)</label>
+                <textarea name="popup_text" id="popup_text"></textarea>
             </p>
         </div>
 
         <input type="submit" name="submit" class="submit" value="Generate Code" />
 
         <div class="theme-image">
-            <img src="google.png" id="theme_image" />
+            <img src="images/google.png" id="theme_image" />
         </div>
 
     </form>
@@ -283,7 +319,7 @@
         });
 
         $('#theme').change(function(){
-            $('#theme_image').attr('src', $('#theme').val() + '.png');
+            $('#theme_image').attr('src', 'images/'+$('#theme').val() + '.png');
         });
 
         $('.copy').click(function() {
@@ -297,9 +333,9 @@
         textBox.onfocus = function() {
             textBox.select();
 
-            // Work around Chrome's little problem
+            /* Work around the Chrome problem */
             textBox.onmouseup = function() {
-                // Prevent further mouseup intervention
+                /* Prevent further mouseup intervention */
                 textBox.onmouseup = null;
                 return false;
             };

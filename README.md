@@ -3,6 +3,6 @@ If you find yourself having to create maps with Leaflet on more than one occasio
 
 **Note:** Requires PHP to run. No special configuration.
 
-<img src="leaflet.gif" />
+<img src="leaflet-demo.gif" />
 
 **License:** MIT (https://opensource.org/licenses/MIT)

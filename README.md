@@ -1,8 +1,8 @@
 # The Leaflet Map Generator
-If you find yourself having to crate maps wih Leaflet on occasion, this generator can make life easier.
+If you find yourself having to create maps with Leaflet on more than one occasion, this generator can make life easier.
 
-**Note:** Requires PHP to run.
+**Note:** Requires PHP to run. No special configuration.
 
 <img src="leaflet.gif" />
 
-MIT FTW! (https://opensource.org/licenses/MIT)
+**License:** MIT (https://opensource.org/licenses/MIT)
